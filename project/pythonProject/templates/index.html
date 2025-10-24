@@ -1,0 +1,185 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>Resources</title>-->
+<!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Resources</h1>-->
+
+<!--    <form method="get">-->
+<!--        <input type="text" name="level" placeholder="Level: College / High School" value="{{ request.args.get('level','') }}">-->
+<!--        <input type="text" name="rtype" placeholder="Type: Tutorial / Article / Course" value="{{ request.args.get('rtype','') }}">-->
+<!--        <button type="submit">Filtrează</button>-->
+<!--    </form>-->
+
+<!--    <h2>Statistics</h2>-->
+<!--    <div id="stats"></div>-->
+
+<!--    <ul>-->
+<!--    {% for res in resources %}-->
+<!--        <li>-->
+<!--            <a href="/resource/{{ loop.index0 }}">{{ res.title }}</a> - {{ res.level }} - {{ res.rtype }}-->
+<!--        </li>-->
+<!--    {% else %}-->
+<!--        <li>There are no resources.</li>-->
+<!--    {% endfor %}-->
+<!--    </ul>-->
+
+<!--    <hr>-->
+<!--<h2>Universities from DBpedia (Semantic Web Data)</h2>-->
+
+<!--{% if universities %}-->
+<!--    <table border="1" cellpadding="8" cellspacing="0">-->
+<!--        <tr style="background-color:#f0f0f0;">-->
+<!--            <th>Name</th>-->
+<!--            <th>Description</th>-->
+<!--            <th>Link</th>-->
+<!--        </tr>-->
+<!--        {% for uni in universities %}-->
+<!--        <tr>-->
+<!--            <td>{{ uni['name'] }}</td>-->
+<!--            <td>{{ uni.get('abstract', 'No description available')[:250] }}...</td>-->
+<!--            <td><a href="{{ uni.get('uri', '#') }}" target="_blank">View on DBpedia</a></td>-->
+
+<!--        </tr>-->
+<!--        {% endfor %}-->
+<!--    </table>-->
+<!--{% else %}-->
+<!--    <p>No universities found from DBpedia.</p>-->
+<!--{% endif %}-->
+
+
+<!--    <button onclick="exportJSONLD()">Export JSON-LD</button>-->
+
+<!--    <script src="{{ url_for('static', filename='js/script.js') }}"></script>-->
+<!--    <script>-->
+<!--        const resources = JSON.parse('{{ resources_json_str | safe }}');-->
+
+<!--        function showStats(resources) {-->
+<!--            const levels = {};-->
+<!--            const types = {};-->
+<!--            resources.forEach(r => {-->
+<!--                levels[r.level] = (levels[r.level] || 0) + 1;-->
+<!--                types[r.rtype] = (types[r.rtype] || 0) + 1;-->
+<!--            });-->
+
+<!--            let statsHtml = "<h3>By level:</h3><ul>";-->
+<!--            for (let level in levels) {-->
+<!--                statsHtml += `<li>${level}: ${levels[level]} resurse</li>`;-->
+<!--            }-->
+<!--            statsHtml += "</ul>";-->
+
+<!--            statsHtml += "<h3>By type:</h3><ul>";-->
+<!--            for (let type in types) {-->
+<!--                statsHtml += `<li>${type}: ${types[type]} resurse</li>`;-->
+<!--            }-->
+<!--            statsHtml += "</ul>";-->
+
+<!--            document.getElementById("stats").innerHTML = statsHtml;-->
+<!--        }-->
+
+<!--        function exportJSONLD() {-->
+<!--            const jsonLD = JSON.parse('{{ export_jsonld_str | safe }}');-->
+<!--            const blob = new Blob([JSON.stringify(jsonLD, null, 4)], {type: "application/json"});-->
+<!--            const url = URL.createObjectURL(blob);-->
+<!--            const a = document.createElement('a');-->
+<!--            a.href = url;-->
+<!--            a.download = "resources.json";-->
+<!--            a.click();-->
+<!--            URL.revokeObjectURL(url);-->
+<!--        }-->
+
+<!--        showStats(resources);-->
+<!--    </script>-->
+
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Educational Resources Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Educational Resources Dashboard</h1>
+
+    <h2>Manual Resources (Local Dataset)</h2>
+    <form method="get">
+        <input type="text" name="level" placeholder="Level: College / High School" value="{{ request.args.get('level','') }}">
+        <input type="text" name="rtype" placeholder="Type: Tutorial / Article / Course" value="{{ request.args.get('rtype','') }}">
+        <button type="submit">Filter</button>
+    </form>
+
+    <h3>Statistics</h3>
+    <div id="stats"></div>
+
+    <ul>
+    {% for res in resources %}
+        <li>
+            <a href="/resource/{{ loop.index0 }}">{{ res.title }}</a> — {{ res.level }} — {{ res.rtype }}
+        </li>
+    {% else %}
+        <li>No manual resources found.</li>
+    {% endfor %}
+    </ul>
+
+    <button onclick="exportJSONLD()">Export JSON-LD</button>
+
+    <hr>
+
+    <h2>Semantic Web Integration</h2>
+    <p>
+        This project also integrates live data from the Semantic Web using <strong>DBpedia</strong>.
+        You can explore universities in Romania extracted through <strong>SPARQL queries</strong>.
+    </p>
+
+    <a href="/universities">
+        <button>🔗 View Universities from DBpedia</button>
+    </a>
+
+    <hr>
+    <footer>
+        <small>© 2025 Educational Resource Semantic Web Demo</small>
+    </footer>
+
+    <script>
+        const resources = JSON.parse('{{ resources_json_str | safe }}');
+
+        function showStats(resources) {
+            const levels = {};
+            const types = {};
+            resources.forEach(r => {
+                levels[r.level] = (levels[r.level] || 0) + 1;
+                types[r.rtype] = (types[r.rtype] || 0) + 1;
+            });
+
+            let statsHtml = "<h4>By Level:</h4><ul>";
+            for (let level in levels) statsHtml += `<li>${level}: ${levels[level]}</li>`;
+            statsHtml += "</ul>";
+
+            statsHtml += "<h4>By Type:</h4><ul>";
+            for (let type in types) statsHtml += `<li>${type}: ${types[type]}</li>`;
+            statsHtml += "</ul>";
+
+            document.getElementById("stats").innerHTML = statsHtml;
+        }
+
+        function exportJSONLD() {
+            const jsonLD = JSON.parse('{{ export_jsonld_str | safe }}');
+            const blob = new Blob([JSON.stringify(jsonLD, null, 4)], {type: "application/json"});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "resources.json";
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        showStats(resources);
+    </script>
+</body>
+</html>

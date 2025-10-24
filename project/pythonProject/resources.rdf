@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ex="http://example.org/schema#">
+
+  <ex:Resource>
+    <ex:title>Introduction to Python Programming</ex:title>
+    <ex:author>OpenStax</ex:author>
+    <ex:level>Beginner</ex:level>
+    <ex:type>Course</ex:type>
+    <ex:url>https://assets.openstax.org/oscms-prodcms/media/documents/Introduction_to_Python_Programming_-_WEB.pdf</ex:url>
+    <ex:framework>Computer Science Curriculum</ex:framework>
+    <ex:target>Python Programming Basics</ex:target>
+  </ex:Resource>
+
+  <ex:Resource>
+    <ex:title>Calculus Online Textbook</ex:title>
+    <ex:author>MIT OpenCourseWare</ex:author>
+    <ex:level>College</ex:level>
+    <ex:type>Textbook</ex:type>
+    <ex:url>https://ocw.mit.edu/courses/res-18-001-calculus-fall-2023/pages/textbook/</ex:url>
+    <ex:framework>Mathematics Curriculum</ex:framework>
+    <ex:target>Single and Multivariable Calculus</ex:target>
+  </ex:Resource>
+
+  <ex:Resource>
+    <ex:title>Free Grammar E-Book Level 1</ex:title>
+    <ex:author>Espresso English</ex:author>
+    <ex:level>Beginner</ex:level>
+    <ex:type>Grammar Guide</ex:type>
+    <ex:url>https://www.espressoenglish.net/wp-content/uploads/2012/02/Free-English-Grammar-eBook-Beginner.pdf</ex:url>
+    <ex:framework>English Language Curriculum</ex:framework>
+    <ex:target>Basic English Grammar</ex:target>
+  </ex:Resource>
+
+  <ex:Resource>
+    <ex:title>Coding for Beginners in Easy Steps</ex:title>
+    <ex:author>OJO CV</ex:author>
+    <ex:level>Beginner</ex:level>
+    <ex:type>Programming Guide</ex:type>
+    <ex:url>https://dl.ojocv.gov.et/admin_/book/coding-for-beginners-in-easy-steps-basic-programming-for-all-ages.pdf</ex:url>
+    <ex:framework>Computer Science Curriculum</ex:framework>
+    <ex:target>Introduction to Programming</ex:target>
+  </ex:Resource>
+
+  <ex:Resource>
+    <ex:title>Linear Algebra</ex:title>
+    <ex:author>UC Davis</ex:author>
+    <ex:level>College</ex:level>
+    <ex:type>Textbook</ex:type>
+    <ex:url>https://www.math.ucdavis.edu/~linear/linear-guest.pdf</ex:url>
+    <ex:framework>Mathematics Curriculum</ex:framework>
+    <ex:target>Linear Algebra Concepts</ex:target>
+  </ex:Resource>
+
+</rdf:RDF>

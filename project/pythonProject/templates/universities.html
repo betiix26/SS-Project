@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Universities from DBpedia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* ====== BODY ====== */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eef2f7;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        /* ====== HEADER ====== */
+        header {
+            background: linear-gradient(135deg, #243447, #2c3e50);
+            color: white;
+            padding: 60px 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+            animation: fadeInDown 0.8s ease;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ecf0f1;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+        }
+
+        header p {
+            margin-top: 8px;
+            font-size: 16px;
+            color: #ecf0f1;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* ====== SEARCH FORM ====== */
+        .search-form {
+            margin: 30px auto;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-form input {
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 200px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-form input:focus {
+            outline: none;
+            border-color: #2980b9;
+            box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
+        }
+
+        .search-form button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            background-color: #2980b9;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .search-form button:hover {
+            background-color: #1f6391;
+            transform: translateY(-2px);
+        }
+
+        /* ====== CARDS ====== */
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin: 40px 20px;
+        }
+
+        .card {
+            background-color: white;
+            width: 280px;
+            padding: 25px 20px;
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+            text-align: left;
+            transition: transform 0.3s, box-shadow 0.3s;
+            opacity: 0;
+            animation: fadeInUp 0.6s forwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        /* poți adăuga mai multe dacă ai carduri mai multe */
+
+        @keyframes fadeInUp {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            color: #34495e;
+        }
+
+        .card p {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .card a {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .card a:hover {
+            text-decoration: underline;
+        }
+
+        .card .icon {
+            font-size: 18px;
+            margin-right: 6px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 35px;
+            padding: 12px 25px;
+            background-color: #2980b9;
+            color: white;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+
+        .back-link:hover {
+            background-color: #1f618d;
+        }
+
+        /* ====== EXPORT BUTTON ====== */
+        .export-btn {
+            margin: 30px auto;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            background-color: #27ae60;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .export-btn:hover {
+            background-color: #1f7a46;
+            transform: translateY(-2px);
+        }
+
+        /* ====== FOOTER ====== */
+        footer {
+            margin-top: 60px;
+            padding: 20px 10px;
+            background-color: #34495e;
+            color: #ecf0f1;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 700px) {
+            .cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            .search-form input {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Universities in Romania</h1>
+    <p>Extracted dynamically from DBpedia using SPARQL</p>
+    <a href="/" class="back-link">← Back to the Dashboard</a>
+</header>
+
+<div class="search-form">
+    <form method="get">
+        <input type="text" name="name" placeholder="🔍 University name" value="{{ request.args.get('name','') }}">
+        <input type="text" name="city" placeholder="🏙️ City (e.g., Bucharest, Cluj)" value="{{ request.args.get('city','') }}">
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+<div class="cards">
+    {% for u in universities %}
+    <div class="card">
+        <h2>🏫 {{ u.name }}</h2>
+        <p><span class="icon">📍</span><strong>City:</strong> {{ u.city }}</p>
+        <p>{{ u.abstract[:200] }}{% if u.abstract|length > 200 %}...{% endif %}</p>
+        <a href="{{ u.uri }}" target="_blank">View on DBpedia</a>
+    </div>
+    {% else %}
+    <p>No universities found.</p>
+    {% endfor %}
+</div>
+
+<button class="export-btn" onclick="exportJSONLD()">💾 Export JSON-LD</button>
+
+<footer>
+    © 2025 Educational Resources & Universities Explorer
+</footer>
+
+<script>
+    function exportJSONLD() {
+        const jsonLD = JSON.parse('{{ jsonld_str | safe }}');
+        const blob = new Blob([JSON.stringify(jsonLD, null, 4)], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "universities.json";
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manual Resources Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* ====== GENERAL ====== */
+        body {
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #2c3e50;
+        }
+
+        /* ====== HEADER ====== */
+        header {
+            background: linear-gradient(135deg, #243447, #2c3e50);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: #f8f9fa;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+        }
+
+        /* ====== LAYOUT ====== */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            margin: 40px auto;
+            gap: 25px;
+            padding: 0 20px;
+        }
+
+        /* ====== SIDEBAR ====== */
+        .sidebar {
+            flex: 1;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            min-width: 250px;
+        }
+        .sidebar h3 {
+            margin-top: 0;
+            color: #34495e;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: 1px solid #d0d7de;
+            transition: border-color 0.2s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        button, .export-btn {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .export-btn {
+            background-color: #27ae60;
+            width: 100%;
+        }
+        .export-btn:hover {
+            background-color: #1e8449;
+        }
+
+        /* ====== STATS ====== */
+        .stats h4 {
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        .stats ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+        .stats li {
+            background-color: #ecf0f1;
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        /* ====== CONTENT ====== */
+        .content {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .content h3 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        ul.resources {
+            list-style: none;
+            padding: 0;
+        }
+        ul.resources li {
+            background-color: white;
+            margin-bottom: 12px;
+            padding: 18px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        ul.resources li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }
+        ul.resources li a {
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        ul.resources li span {
+            display: block;
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-top: 4px;
+        }
+
+        /* ====== FOOTER ====== */
+        footer {
+            margin-top: 60px;
+            padding: 20px;
+            background-color: #34495e;
+            color: #ecf0f1;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 35px;
+            padding: 12px 25px;
+            background-color: #2980b9;
+            color: white;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+
+        .back-link:hover {
+            background-color: #1f618d;
+        }
+
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Manual Educational Resources</h1>
+</header>
+
+<div class="container">
+
+    <!-- LEFT SIDEBAR -->
+    <div class="sidebar">
+        <h3>Filter Resources</h3>
+        <form method="get">
+            <input type="text" name="level" placeholder="Level: College / High School" value="{{ request.args.get('level','') }}">
+            <input type="text" name="rtype" placeholder="Type: Tutorial / Article / Course" value="{{ request.args.get('rtype','') }}">
+            <button type="submit">Filter</button>
+        </form>
+
+        <div class="stats" id="stats"></div>
+
+        <button class="export-btn" onclick="exportJSONLD()">Export JSON-LD</button>
+        <a href="/" class="back-link">← Back to the Dashboard</a>
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <div class="content">
+        <h3>Resource List</h3>
+        <ul class="resources">
+            {% for res in resources %}
+            <li>
+                <a href="/resource/{{ loop.index0 }}">{{ res.title }}</a>
+                <span>Level: {{ res.level }} | Type: {{ res.rtype }}</span>
+            </li>
+            {% else %}
+            <li>No manual resources found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+<script>
+    const resources = JSON.parse('{{ resources_json_str | safe }}');
+
+    function showStats(resources) {
+        const levels = {};
+        const types = {};
+        resources.forEach(r => {
+            levels[r.level] = (levels[r.level] || 0) + 1;
+            types[r.rtype] = (types[r.rtype] || 0) + 1;
+        });
+
+        let statsHtml = "<h4>By Level:</h4><ul>";
+        for (let level in levels) statsHtml += `<li>${level}: ${levels[level]}</li>`;
+        statsHtml += "</ul>";
+
+        statsHtml += "<h4>By Type:</h4><ul>";
+        for (let type in types) statsHtml += `<li>${type}: ${types[type]}</li>`;
+        statsHtml += "</ul>";
+
+        document.getElementById("stats").innerHTML = statsHtml;
+    }
+
+    function exportJSONLD() {
+        const jsonLD = JSON.parse('{{ export_jsonld_str | safe }}');
+        const blob = new Blob([JSON.stringify(jsonLD, null, 4)], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "resources.json";
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    showStats(resources);
+</script>
+
+<footer>
+    © 2025 Educational Resources & Universities Explorer
+</footer>
+
+</body>
+</html>

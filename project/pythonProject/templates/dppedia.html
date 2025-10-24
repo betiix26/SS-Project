@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DBpedia Universities</title>
+</head>
+<body>
+    <h1>Romanian Universities from DBpedia</h1>
+    <p>These resources are fetched automatically via SPARQL queries.</p>
+
+    <ul>
+    {% for uni in universities %}
+        <li>
+            <strong>{{ uni.title }}</strong> ({{ uni.alignment["target"] }}) <br>
+            Type: {{ uni.rtype }} <br>
+            <a href="{{ uni.url }}" target="_blank">{{ uni.url }}</a>
+        </li>
+    {% else %}
+        <li>No data found.</li>
+    {% endfor %}
+    </ul>
+
+    <p><a href="/dbpedia/jsonld">Export as JSON-LD</a></p>
+    <p><a href="/">← Back to main resources</a></p>
+</body>
+</html>

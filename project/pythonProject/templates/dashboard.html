@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Educational Resources Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #f2f4f8 0%, #d6e0f0 100%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            padding: 60px 20px 70px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 52px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        /* Linie decorativă sub titlu */
+        header h1::after {
+            content: "";
+            display: block;
+            width: 120px;
+            height: 4px;
+            background: #1abc9c;
+            margin: 20px auto 0;
+            border-radius: 3px;
+        }
+
+        header p {
+            margin-top: 25px;
+            font-size: 18px;
+            color: #ecf0f1;
+            opacity: 0.9;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin: 60px 20px;
+            max-width: 1000px;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.95);
+            width: 280px;
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            text-decoration: none;
+            color: #2c3e50;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+            background-color: #f9fbff;
+        }
+
+        .card span {
+            font-size: 50px;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .card h2 {
+            margin: 0 0 10px 0;
+            font-size: 26px;
+            font-weight: 600;
+        }
+
+        .card p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .card .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #e74c3c;
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        footer {
+            padding: 20px 10px;
+            background-color: #34495e;
+            color: #ecf0f1;
+            font-size: 14px;
+            text-align: center;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 700px) {
+            header h1 {
+                font-size: 38px;
+            }
+            .cards {
+                flex-direction: column;
+                align-items: center;
+                margin: 40px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Educational Resources Dashboard</h1>
+    <p>Select a section to explore</p>
+</header>
+
+<main>
+    <div class="cards">
+        <a href="{{ url_for('manual_resources') }}" class="card">
+            <span>📚</span>
+            <div class="badge">Local</div>
+            <h2>Manual Resources</h2>
+            <p>Access a local dataset of educational resources with filters, statistics, and JSON-LD export.</p>
+        </a>
+
+        <a href="{{ url_for('universities') }}" class="card">
+            <span>🏫</span>
+            <div class="badge">DBpedia</div>
+            <h2>Universities</h2>
+            <p>Explore Romanian universities extracted dynamically via DBpedia SPARQL queries.</p>
+        </a>
+    </div>
+</main>
+
+<footer>
+    © 2025 Educational Resources & Universities Explorer
+</footer>
+
+</body>
+</html>
