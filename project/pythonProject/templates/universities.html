@@ -5,7 +5,6 @@
     <title>Universities from DBpedia</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        /* ====== BODY ====== */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -15,7 +14,6 @@
             text-align: center;
         }
 
-        /* ====== HEADER ====== */
         header {
             background: linear-gradient(135deg, #243447, #2c3e50);
             color: white;
@@ -44,7 +42,6 @@
             to { opacity: 1; transform: translateY(0);}
         }
 
-        /* ====== SEARCH FORM ====== */
         .search-form {
             margin: 30px auto;
             display: flex;
@@ -84,7 +81,6 @@
             transform: translateY(-2px);
         }
 
-        /* ====== CARDS ====== */
         .cards {
             display: flex;
             flex-wrap: wrap;
@@ -109,7 +105,6 @@
         .card:nth-child(2) { animation-delay: 0.2s; }
         .card:nth-child(3) { animation-delay: 0.3s; }
         .card:nth-child(4) { animation-delay: 0.4s; }
-        /* poți adăuga mai multe dacă ai carduri mai multe */
 
         @keyframes fadeInUp {
             from {opacity: 0; transform: translateY(20px);}
@@ -162,7 +157,6 @@
             background-color: #1f618d;
         }
 
-        /* ====== EXPORT BUTTON ====== */
         .export-btn {
             margin: 30px auto;
             padding: 12px 25px;
@@ -190,7 +184,6 @@
             text-align: center;
         }
 
-        /* ====== RESPONSIVE ====== */
         @media (max-width: 700px) {
             .cards {
                 flex-direction: column;
@@ -223,7 +216,7 @@
     {% for u in universities %}
     <div class="card">
         <h2>🏫 {{ u.name }}</h2>
-        <p><span class="icon">📍</span><strong>City:</strong> {{ u.city }}</p>
+        <p><strong>City:</strong> {{ u.city }}</p>
         <p>{{ u.abstract[:200] }}{% if u.abstract|length > 200 %}...{% endif %}</p>
         <a href="{{ u.uri }}" target="_blank">View on DBpedia</a>
     </div>
@@ -240,7 +233,7 @@
 
 <script>
     function exportJSONLD() {
-        const jsonLD = JSON.parse('{{ jsonld_str | safe }}');
+        const jsonLD = {{ jsonld | tojson | safe }};
         const blob = new Blob([JSON.stringify(jsonLD, null, 4)], {type: "application/json"});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');

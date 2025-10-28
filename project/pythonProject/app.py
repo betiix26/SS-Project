@@ -3,11 +3,9 @@ from models import Resource
 from dbpedia_utils import get_universities_from_dbpedia
 from SPARQLWrapper import SPARQLWrapper, JSON
 import json
+from rdflib import Graph, Namespace, RDF, URIRef, Literal
 
 app = Flask(__name__)
-
-# ---------- RESURSE MANUALE ----------
-from rdflib import Graph, Namespace, RDF, URIRef, Literal
 
 EX = Namespace("http://example.org/schema#")
 
@@ -31,9 +29,6 @@ def load_resources_from_rdf(file_path="resources.rdf"):
 
 resources = load_resources_from_rdf("resources.rdf")
 
-
-
-# ---------- RUTA PRINCIPALĂ ----------
 @app.route("/dashboard")
 def index():
     level = request.args.get("level", "")
@@ -64,8 +59,6 @@ def index():
     )
 
 
-
-# ---------- DETALII PENTRU O RESURSĂ ----------
 @app.route("/resource/<int:idx>")
 def resource_detail(idx):
     if idx < 0 or idx >= len(resources):
@@ -74,13 +67,10 @@ def resource_detail(idx):
     jsonld = json.dumps(res.to_jsonld(), indent=4)
     return render_template("resource.html", resource=res, jsonld=jsonld)
 
-
-# ---------- RESURSE DIN DBPEDIA ----------
 @app.route("/dbpedia")
 def dbpedia_resources():
     universities = get_universities_from_dbpedia(limit=15)
 
-    # convertim în format Resource pentru a le putea transforma în JSON-LD
     dbpedia_resources = [
         Resource(
             u["name"],
@@ -95,8 +85,6 @@ def dbpedia_resources():
 
     return render_template("dbpedia.html", universities=dbpedia_resources)
 
-
-# ---------- EXPORT JSON-LD DIN DBPEDIA ----------
 @app.route("/dbpedia/jsonld")
 def dbpedia_jsonld():
     universities = get_universities_from_dbpedia(limit=15)
@@ -116,6 +104,7 @@ def dbpedia_jsonld():
         response=json.dumps(jsonld, indent=4),
         mimetype="application/json"
     )
+
 @app.route("/universities")
 def universities():
     city = request.args.get("city", "").strip()
@@ -150,7 +139,6 @@ def universities():
             "city": r.get("cityLabel", {}).get("value", "Unknown")
         })
 
-    # JSON-LD export
     jsonld = [{
         "@context": "https://schema.org",
         "@type": "CollegeOrUniversity",
@@ -166,8 +154,9 @@ def universities():
     return render_template(
         "universities.html",
         universities=universities,
-        jsonld_str=json.dumps(jsonld)
+        jsonld=jsonld
     )
+
 @app.route("/")
 def dashboard():
     return render_template("dashboard.html")
