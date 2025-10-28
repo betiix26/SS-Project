@@ -1,0 +1,13 @@
+https://dbpedia.org/sparql
+
+
+ SELECT ?university ?name ?abstract WHERE {{
+        ?university rdf:type dbo:University .
+        ?university rdfs:label ?name .
+        OPTIONAL {{ ?university dbo:abstract ?abstract . }}
+        FILTER (lang(?name) = 'en')
+        FILTER (lang(?abstract) = 'en')
+    }} LIMIT 5
+
+
+pt testare query sparql
